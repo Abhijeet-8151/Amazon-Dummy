@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_0466f483_cb0d_4292_a3a5_f9798bb1a59d_Input_Payload = Array<{| Account_ID: String |}>
+

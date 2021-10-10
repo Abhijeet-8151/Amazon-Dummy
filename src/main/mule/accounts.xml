@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getAccounts" doc:id="7bc5751e-cfbf-47ae-aad0-8c7195d0222b" >
+		<http:listener doc:name="Listener" doc:id="63d7a603-de6a-40d6-8ed4-f3f1ef8d2835" config-ref="HTTP_Listener_config" path="/amazon/accounts"/>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="d0fd1c38-696f-4a1b-bc67-313622d1ec6b" />
+		<db:select doc:name="Select" doc:id="ed063aea-dc10-49fa-a0ac-bd5b4723433e" config-ref="Database_Config">
+			<db:sql ><![CDATA[Select Account_ID from Accounts where Email = :Email and Phone = :Phone]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'Email':attributes.queryParams.email,'Phone':attributes.queryParams.phone}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="081b47a3-4605-4c40-9dfd-cc29b47b8477" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="8253badc-5ba5-4b96-bbe3-d911de5527f1" >
+			<when expression="#[payload != [&#10;  &#10;]]">
+				<flow-ref doc:name="Flow Reference" doc:id="487d44dc-1ade-474b-9d54-64b5bcaf7425" name="menu"/>
+			</when>
+			<otherwise>
+				<set-payload value="Please create an account first" doc:name="Set Payload" doc:id="1f99e2f6-3f29-4293-87f9-f8263ea2a660" />
+			</otherwise>
+		</choice>
+	</flow>
+	<flow name="postAccounts" doc:id="fdce1144-56ec-4e37-ab93-46334d773396" >
+		<http:listener doc:name="Listener" doc:id="b4ae4c52-0755-49ae-8614-504c766ff9ac" config-ref="HTTP_Listener_config" path="/amazon/createAccount"/>
+		<ee:transform doc:name="Transform Message" doc:id="06fb828d-f6b7-4ea0-9bfd-24f13c27ffa2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload map ((item, index) -> {
+    (item.name): item.value
+}) reduce ((item, accumulator) -> item ++ accumulator)
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:select doc:name="Select" doc:id="2f215031-06f9-46f1-b61c-e6a957bff042" config-ref="Database_Config" target="targetvar">
+			<db:sql ><![CDATA[Select * from Accounts where Email = :Email and Phone = :Phone]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'Email': payload.Email,'Phone': payload.Phone}]]]></db:input-parameters>
+		</db:select>
+		<choice doc:name="Choice" doc:id="c6915c46-90fa-41e3-b5b6-d82503073f87" >
+			<when expression="#[vars.targetvar == [&#10;  &#10;]]">
+				<db:insert doc:name="Insert" doc:id="1382be8b-1680-45b4-8d56-83a31ed704a1" config-ref="Database_Config">
+			<db:sql><![CDATA[insert into Accounts (Name,Phone,Email,Street,City,State,Pincode)
+values (:Name,:Phone,:Email,:Street,:City,:State,:Pincode)]]></db:sql>
+			<db:input-parameters><![CDATA[#[payload]]]></db:input-parameters>
+		</db:insert>
+				<set-payload value="Account created successfully" doc:name="Set Payload" doc:id="9354f7e1-5a72-46ec-ab32-5e1ed441ed5d" />
+			</when>
+			<otherwise >
+				<set-payload value="Account already exists for provided Email and Phone Number" doc:name="Set Payload" doc:id="5eca946d-9c98-440b-931c-f69da6e3cd15" />
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

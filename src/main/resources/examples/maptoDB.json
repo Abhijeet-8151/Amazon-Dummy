@@ -1,0 +1,9 @@
+[
+	{
+		"ITEM_ID":"123",
+		"ITEM_NAME":"xyz",
+		"ITEM_DESCRIPTION":"abc",
+		"PRICE":"100",
+		"AVAILABILITY":"ced"		
+	}
+]

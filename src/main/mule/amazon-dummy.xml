@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:s3="http://www.mulesoft.org/schema/mule/s3" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
+	<flow name="amazon-dummyFlow" doc:id="df5e2a83-e0ba-42f5-aaef-00b6ac19dc06" >
+		<http:listener doc:name="Listener" doc:id="7fcbd27c-20c0-4dcb-9488-7c71fd832da4" path="/mysql" config-ref="HTTP_Listener_config"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="e3610cc4-2c1c-4038-887d-7e4f14501979" >
+			<route >
+				<s3:get-object doc:name="Get object" doc:id="a8f2571d-514c-401e-b25f-9d9ab653376f" bucketName="g13-inventory" key="Items.csv" config-ref="Amazon_S3_Configuration" />
+				<ee:transform doc:name="Transform Message" doc:id="306b2af3-abaa-4665-9a9a-ab509d4a2588">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	Item_ID: payload01.ITEM_ID,
+	Item_Name: payload01.ITEM_NAME,
+	Item_Description: payload01.ITEM_DESCRIPTION,
+	Price: payload01.PRICE,
+	Availability: payload01.AVAILABILITY
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<db:bulk-insert doc:name="Bulk insert" doc:id="99a958e8-60c0-47ed-84e2-44edf37bbc6a" config-ref="Database_Config">
+			<db:sql><![CDATA[insert IGNORE into Items (Item_ID,Item_Name,Item_Description,Price,Availability)
+values (:Item_ID,:Item_Name,:Item_Description,:Price,:Availability)]]></db:sql>
+		</db:bulk-insert>
+			</route>
+			<route >
+				<s3:get-object doc:name="Get object" doc:id="8c8d8d16-d532-443e-b967-f91063448604" config-ref="Amazon_S3_Configuration" bucketName="g13-inventory" key="Orders.csv"/>
+				<ee:transform doc:name="Transform Message" doc:id="1ac585ea-c3eb-4809-b4ca-3e58ca2b0e5e" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	Order_Item_ID: payload01.Order_Item_ID,
+	Item_ID: payload01.Item_ID,
+	Item_Name: payload01.Item_Name,
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<db:bulk-insert doc:name="Bulk insert" doc:id="24c5e487-1bcb-43f3-8300-2bab6691a6fa" config-ref="Database_Config">
+					<db:sql ><![CDATA[insert IGNORE into Orders (Order_Item_ID,Item_ID,Item_Name)
+values (:Order_Item_ID,:Item_ID,:Item_Name)]]></db:sql>
+				</db:bulk-insert>
+			</route>
+			<route >
+				<s3:get-object doc:name="Get object" doc:id="5b293880-d673-4087-abf8-dc4e2443bbdf" config-ref="Amazon_S3_Configuration" bucketName="g13-inventory" key="Accounts.csv"/>
+				<ee:transform doc:name="Transform Message" doc:id="79cc8d5f-3955-4520-9428-9407cc624a22" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	Account_ID: payload01.Account_ID,
+	Name: payload01.Name,
+	Phone: payload01.Phone,
+	Email: payload01.Email,
+	Street: payload01.Street,
+	City: payload01.City,
+	State: payload01.State,
+	Pincode: payload01.Pincode
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<db:bulk-insert doc:name="Bulk insert" doc:id="d31680e6-2311-4ff5-99c9-af0ab6b3b56e" config-ref="Database_Config">
+					<db:sql ><![CDATA[insert IGNORE into Accounts (Account_ID,Name,Phone,Email,Street,City,State,Pincode)
+values (:Account_ID,:Name,:Phone,:Email,:Street,:City,:State,:Pincode)]]></db:sql>
+				</db:bulk-insert>
+			</route>
+		</scatter-gather>
+		<set-payload value="Data loaded from AWS to DB" doc:name="Set Payload" doc:id="85f296c7-6036-441c-af98-88a44e658133" />
+	</flow>
+</mule>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="postOrders" doc:id="84fd2d96-0ed5-4508-a660-0834e6bbade3" >
+		<http:listener doc:name="Listener" doc:id="0faf146f-3d8b-45bc-8010-4b44fdebdcaa" config-ref="HTTP_Listener_config" path="/amazon/order"/>
+		<ee:transform doc:name="Transform Message" doc:id="29b1eb8d-8a40-4bdb-965c-ac2a9d5a1ebd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	Item_Name: payload01.Item_Name,
+	Item_ID: payload01.Item_ID,
+	Email: attributes.queryParams.email
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="e502a825-2c18-483c-984e-c1c96cc1f6a0" config-ref="Database_Config">
+					<db:sql><![CDATA[insert into Orders (Item_ID,Item_Name,Email)
+values(:Item_ID,:Item_Name,:Email)]]></db:sql>
+				</db:bulk-insert>
+		<db:delete doc:name="Delete" doc:id="937c3d93-abbb-4d3a-824b-f8145399b731" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from Wishlist where Email = :Email]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'Email': attributes.queryParams.email}]]]></db:input-parameters>
+		</db:delete>
+		<set-payload value="Order has been placed successfully" doc:name="Set Payload" doc:id="06f83be4-5798-4ecb-8c09-053765224ecc" />
+	</flow>
+	<flow name="getOrders" doc:id="fc6ec4f3-e2a5-4776-bb27-794f6aa3cdbf" >
+		<http:listener doc:name="Listener" doc:id="489dd7a5-ef85-470a-842e-96a34a4e2411" config-ref="HTTP_Listener_config" path="/amazon/getOrders"/>
+		<db:select doc:name="Select" doc:id="b43eedbc-b5f9-480c-9875-e51bea8b0f34" config-ref="Database_Config">
+			<db:sql ><![CDATA[Select Order_Item_ID, Item_ID, Item_Name from Orders where Email = :Email]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'Email': attributes.queryParams.email}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="b09d7944-cbd4-4fb4-a0fd-b67c019f5795" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="cancelOrders" doc:id="ff52a524-839d-4dd0-9da5-f6fc8b557f0e" >
+		<http:listener doc:name="Listener" doc:id="b3a41f61-c0b2-421b-82d2-5f72e31ca93a" config-ref="HTTP_Listener_config" path="/amazon/cancelOrder"/>
+		<set-variable value="#[attributes.queryParams.id]" doc:name="Set Variable" doc:id="e82373da-f8e4-4101-b848-cc0bcff767df" variableName="dvar"/>
+		<db:delete doc:name="Delete" doc:id="60397faf-f931-499a-a339-0cb8700e503f" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from Orders where Order_Item_ID = :ID and Email = :Email]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'ID':vars.dvar, 'Email':attributes.queryParams.email}]]]></db:input-parameters>
+		</db:delete>
+		<set-payload value="Order cancelled successfully" doc:name="Set Payload" doc:id="33c3be0f-ffc8-407b-ac54-8afe9761cf55" />
+	</flow>
+</mule>

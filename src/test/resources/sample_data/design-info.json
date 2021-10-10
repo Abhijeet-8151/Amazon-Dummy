@@ -1,0 +1,10 @@
+{
+  "sampleData": {
+    "f3536f87-cdba-4b99-8368-0bd7a21625ff": {
+      "attributes": "sample_data/httprequestattributes.dwl"
+    },
+    "1ac585ea-c3eb-4809-b4ca-3e58ca2b0e5e": {
+      "payload": "sample_data/list_csv.csv"
+    }
+  }
+}

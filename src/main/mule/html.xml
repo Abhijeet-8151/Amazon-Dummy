@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="login" doc:id="4c3cc249-a64b-42e6-a655-30a0c80d856f" >
+		<http:listener doc:name="Listener" doc:id="4bc98351-94e5-46e6-b62f-bf9567541e3d" config-ref="HTTP_Listener_config" path="/login"/>
+		<parse-template doc:name="Parse Template" doc:id="96fa7219-46b1-4246-822f-2bb6b024b830" >
+			<content >&lt;html&gt;
+
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+ &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot;&gt;
+  &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;body&gt;
+&lt;div align=&quot;center&quot;&gt; &lt;h1&gt; Amazon-Dummy Login&lt;/h1&gt; &lt;/div&gt;
+&lt;hr/&gt;
+&lt;div align=&quot;center&quot; class=&quot;alert alert-primary d-flex justify-content-info mb-2&quot; role=&quot;alert&quot; id=&quot;message-div&quot;&gt;&lt;/div&gt;
+&lt;hr/&gt;
+&lt;div  class=&quot;d-flex justify-content-center&quot;&gt;
+  &lt;div class=&quot;form-row align-items-center&quot;&gt;
+    &lt;div class=&quot;col-auto&quot;&gt;
+	  &lt;div class=&quot;input-group mb-2&quot;&gt;
+		&lt;input type=&quot;email&quot; id=&quot;email&quot; class=&quot;form-control&quot; placeholder=&quot;abc@abc.com&quot;/&gt;
+      &lt;/div&gt;
+	&lt;/div&gt;
+    &lt;div class=&quot;col-auto&quot;&gt;    
+      &lt;div class=&quot;input-group mb-2&quot;&gt;
+       &lt;input type=&quot;phone&quot; id=&quot;phone&quot; class=&quot;form-control&quot; placeholder=&quot;Phone&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+	&lt;button onclick=&quot;login()&quot;  class=&quot;btn btn-primary mb-2&quot; &gt;Login&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br&gt;
+
+&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
+
+&lt;script&gt;
+var x = document.getElementById(&quot;demo&quot;);
+function login() 
+{
+	var email =  document.getElementById('email').value;
+    var phone =  document.getElementById('phone').value;
+	
+	localStorage.setItem(&quot;Email&quot;, email);
+	
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onload = function ()
+	{
+			if (xhr.responseText == 'Please create an account first'){
+			x.innerHTML = xhr.responseText;}
+			else {
+			location.href ='http://localhost:8081/html'; 
+			}
+	}
+	
+	var cred = '?email=' + email + '&amp;phone=' + phone;
+	xhr.open('GET', 'http://localhost:8081/amazon/accounts' + cred);
+	xhr.send();
+}
+
+
+&lt;/script&gt;
+
+&lt;head&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;style&gt;
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #ff9900;
+  color: white;
+  padding: 3px 15px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 385px;
+  right: 450px;
+  width: 100px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=message] {
+  width: 90%;
+  padding: 1px;
+  margin: 5px 0 5px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=message]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 1px 1px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;button class=&quot;open-button&quot; onclick=&quot;openForm()&quot;&gt;Create Account&lt;/button&gt;
+
+&lt;div class=&quot;form-popup&quot; id=&quot;myForm&quot;&gt;
+  &lt;form class=&quot;form-container&quot; id=&quot;formData&quot;&gt;
+    
+
+    &lt;label for=&quot;email&quot;&gt;&lt;b&gt;Email&lt;/b&gt;&lt;/label&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Email&quot; name=&quot;email&quot; required&gt;
+
+    &lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Phone number&lt;/b&gt;&lt;/label&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Phone Number&quot; name=&quot;message&quot; required&gt;
+
+	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Name&lt;/b&gt;&lt;/label&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter your name&quot; name=&quot;message&quot; required&gt;
+	
+	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Street&lt;/b&gt;&lt;/label&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Street&quot; name=&quot;message&quot; required&gt;
+	
+	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;City&lt;/b&gt;&lt;/label&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter City&quot; name=&quot;message&quot; required&gt;
+	
+	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;State&lt;/b&gt;&lt;/label&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter State&quot; name=&quot;message&quot; required&gt;
+	
+	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Pincode&lt;/b&gt;&lt;/label&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Pincode&quot; name=&quot;message&quot; required&gt;
+	
+    &lt;button type=&quot;submit&quot; class=&quot;btn&quot; onclick=&quot;createaccount()&quot;&gt;Create Account&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn cancel&quot; onclick=&quot;closeForm()&quot;&gt;Close&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+function createaccount() {
+  var formData = JSON.stringify($(&quot;#formData&quot;).serializeArray());
+  $.ajax({
+  type: &quot;POST&quot;,
+  url: &quot;http://localhost:8081/amazon/createAccount&quot;,
+  data: formData,
+  success: function(){},
+  dataType: &quot;json&quot;,
+  contentType : &quot;application/json&quot;
+});
+ 
+}
+
+function closeForm() {
+  document.getElementById(&quot;myForm&quot;).style.display = &quot;none&quot;;
+}
+&lt;/script&gt;
+
+&lt;script&gt;
+function openForm() {
+  document.getElementById(&quot;myForm&quot;).style.display = &quot;block&quot;;
+}
+
+function closeForm() {
+  document.getElementById(&quot;myForm&quot;).style.display = &quot;none&quot;;
+}
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</content>
+		</parse-template>
+	</flow>
+	<flow name="menu" doc:id="0466f483-cb0d-4292-a3a5-f9798bb1a59d" >
+		<http:listener doc:name="Listener" doc:id="3547c3fc-0a7d-477f-8d92-8f9368d1781a" config-ref="HTTP_Listener_config" path="/html"/>
+		<parse-template doc:name="Parse Template" doc:id="1099c8e6-64b6-42c5-a906-596e170ace82">
+			<content>&lt;html&gt;
+
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+ &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css&quot;&gt;
+  &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+
+
+
+	&lt;body&gt;
+		&lt;head&gt;
+&lt;!-- CSS --&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css&quot; integrity=&quot;sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2&quot; crossorigin=&quot;anonymous&quot;&gt;
+&lt;style&gt;
+ .dot {
+  height: 25px;
+  width: 25px;
+  background-color: #000;
+  display: block;
+  border-radius: 50%;
+}
+#text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 50px;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+#overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: none;
+}
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;div align=&quot;center&quot;&gt; &lt;h1&gt; Amazon-dummy&lt;/h1&gt; &lt;/div&gt;
+&lt;hr/&gt;
+&lt;div align=&quot;center&quot; class=&quot;alert alert-primary d-flex justify-content-info mb-2&quot; role=&quot;alert&quot; id=&quot;message-div&quot;&gt;&lt;/div&gt;
+&lt;hr/&gt;
+&lt;div  class=&quot;d-flex justify-content-center&quot;&gt;
+  &lt;div class=&quot;form-row align-items-center&quot;&gt;
+    &lt;div class=&quot;col-auto&quot;&gt;
+	  &lt;div class=&quot;input-group mb-2&quot;&gt;
+		&lt;input type=&quot;text&quot; id=&quot;item&quot; class=&quot;form-control&quot; placeholder=&quot;Enter item&quot;/&gt;
+      &lt;/div&gt;
+	&lt;/div&gt;
+	&lt;button onclick=&quot;getparticularItem()&quot;  class=&quot;btn btn-primary mb-2&quot; &gt;Search&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br&gt;
+
+
+&lt;div align=&quot;center&quot;&gt;
+
+&lt;button onclick=&quot;getAllItems()&quot;&gt;Get All items&lt;/button&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+
+&lt;head&gt;
+
+&lt;button onclick=&quot;addwishlist()&quot;&gt;Add to wishlist&lt;/button&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+
+&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
+
+&lt;script&gt;
+var x = document.getElementById(&quot;demo&quot;);
+function getAllItems()
+{
+	var xhr = new XMLHttpRequest();
+	xhr.onload = function () {
+
+	x.innerHTML = xhr.responseText;
+	
+}
+	xhr.open('GET', 'http://localhost:8081/amazon/items');
+	xhr.send();
+}
+&lt;/script&gt;
+
+&lt;script&gt;
+
+function getparticularItem()
+{
+	var item =  document.getElementById('item').value;
+	
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onload = function () {
+
+	
+	var res = xhr.responseText;
+	x.innerHTML = res;
+	localStorage.setItem(&quot;Response&quot;, res);
+	
+    }
+	
+	var param = '?item=' + item;
+	xhr.open('GET', 'http://localhost:8081/amazon/items' + param);
+	xhr.send();
+}
+
+function addwishlist()
+{
+	var response = localStorage.getItem(&quot;Response&quot;);
+	var xhr = new XMLHttpRequest();
+	x.innerHTML = &quot;Adding to wishlist...&quot;;
+	
+	var email = localStorage.getItem(&quot;Email&quot;);
+	var qemail = '?email=' + email;
+	
+	xhr.onload = function () 
+	{
+		x.innerHTML = xhr.responseText;
+	}
+	xhr.open('POST', 'http://localhost:8081/amazon/wishlist' + qemail, true);
+	
+	xhr.setRequestHeader('Content-type', 'application/json');
+	
+	xhr.send(response);
+	
+	
+	
+	
+}
+
+&lt;/script&gt;
+
+&lt;div  class=&quot;d-flex justify-content-end&quot;&gt;
+  &lt;div class=&quot;form-row align-items-end&quot;&gt;
+    
+	&lt;button onclick=&quot;viewwishlist()&quot;  class=&quot;btn btn-primary mb-2&quot; &gt;View Wishlist&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br&gt;
+&lt;script&gt;
+var x = document.getElementById(&quot;demo&quot;);
+function viewwishlist()
+{
+	var xhr = new XMLHttpRequest();
+	
+	var email = localStorage.getItem(&quot;Email&quot;);
+	var qemail = '?email=' + email;
+	
+	xhr.onload = function () {
+
+	res = xhr.responseText;
+	x.innerHTML = res;
+    localStorage.setItem(&quot;Wish&quot;, res);
+	
+}
+	xhr.open('GET', 'http://localhost:8081/amazon/viewWishlist' + qemail);
+	xhr.send();
+}
+&lt;/script&gt;
+
+&lt;button id=&quot;myButton&quot; class=&quot;float-right submit-button&quot; &gt;Proceed to buy&lt;/button&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    document.getElementById(&quot;myButton&quot;).onclick = function () {
+        location.href = &quot;http://localhost:8081/amazon/payment&quot;;
+    };
+&lt;/script&gt;
+
+&lt;div  class=&quot;d-flex justify-content-left&quot;&gt;
+  &lt;div class=&quot;form-row align-items-left&quot;&gt;
+    
+	&lt;button onclick=&quot;vieworders()&quot;  class=&quot;btn btn-primary mb-2&quot; &gt;View Orders&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br&gt;
+&lt;script&gt;
+var x = document.getElementById(&quot;demo&quot;);
+function vieworders()
+{
+	var xhr = new XMLHttpRequest();
+	
+	var email = localStorage.getItem(&quot;Email&quot;);
+	var qemail = '?email=' + email;
+	
+	xhr.onload = function () {
+
+	res = xhr.responseText;
+	x.innerHTML = res;
+    
+	
+}
+	xhr.open('GET', 'http://localhost:8081/amazon/getOrders' + qemail);
+	xhr.send();
+}
+&lt;/script&gt;
+
+&lt;head&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;style&gt;
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #0000FF;
+  color: white;
+  padding: 3px 10px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 100px;
+  right: 1288px;
+  width: 80px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=ID] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=ID]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+
+&lt;button class=&quot;open-button&quot; onclick=&quot;openForm()&quot;&gt;Cancel Order&lt;/button&gt;
+
+&lt;div class=&quot;form-popup&quot; id=&quot;myForm&quot;&gt;
+  &lt;form class=&quot;form-container&quot; id=&quot;cancelform&quot;&gt;
+    
+	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Which order you want to cancel&lt;/b&gt;&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;can_id&quot; placeholder=&quot;Enter Order Item ID&quot; name=&quot;ID&quot; required&gt;
+
+    &lt;button type=&quot;submit&quot; class=&quot;btn&quot; onclick=&quot;cancelOrder()&quot;&gt;Proceed to cancel&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn cancel&quot; onclick=&quot;closeForm()&quot;&gt;Close&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+
+function openForm() {
+  document.getElementById(&quot;myForm&quot;).style.display = &quot;block&quot;;
+}
+
+function closeForm() {
+  document.getElementById(&quot;myForm&quot;).style.display = &quot;none&quot;;
+}
+
+function cancelOrder() {
+	var xhr = new XMLHttpRequest();
+	var can_id = document.getElementById('can_id').value;
+	var email = localStorage.getItem(&quot;Email&quot;);
+	var qparam = '?id=' + can_id + '&amp;email=' + email;  
+	
+	xhr.onload = function () 
+	{
+		res = xhr.responseText;
+		x.innerHTML = res;
+		alert(&quot;This is a text&quot;);
+		
+    }
+	xhr.open('GET', 'http://localhost:8081/amazon/cancelOrder' + qparam);
+	xhr.send();
+}
+
+
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</content>
+		</parse-template>
+	</flow>
+</mule>

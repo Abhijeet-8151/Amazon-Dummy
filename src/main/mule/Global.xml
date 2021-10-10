@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:amazon-dummy="http://www.mulesoft.org/schema/mule/amazon-dummy" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:s3="http://www.mulesoft.org/schema/mule/s3"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/amazon-dummy http://www.mulesoft.org/schema/mule/amazon-dummy/current/mule-amazon-dummy.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d0cb728f-3b05-473e-9621-609d7dd58b62" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<s3:config name="Amazon_S3_Configuration" doc:name="Amazon S3 Configuration" doc:id="78a54e1d-348e-444a-a6d6-93d11b055ecb" >
+		<s3:basic-connection accessKey="AKIAVJTY4POZ5KT7LX57" secretKey="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" region="AP_SOUTH_1" />
+	</s3:config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="62e5fc96-648b-459b-9720-8f5bf6109ba6" >
+		<db:my-sql-connection host="sql6.freemysqlhosting.net" port="3306" user="sql6442163" password="vdH7u7BerT" database="sql6442163" />
+	</db:config>
+	<amazon-dummy:config name="Amazon_dummy_Config" doc:name="Amazon-dummy Config" doc:id="b8cc4119-c49f-45ef-ab35-5d9c222fef4c" property_host="localhost" property_port="8081" property_protocol="HTTP" />
+	<db:config name="Database_Config1" doc:name="Database Config" doc:id="4dbd46d7-919b-4020-a1e4-e3ef9adc4eb4" >
+		<db:oracle-connection host="localhost" user="xe" password="xe" serviceName="xe" />
+	</db:config>
+</mule>

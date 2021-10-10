@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="event-drivenFlow" doc:id="4ec07e3b-7e06-48d3-93c7-86f5455175cc" >
+		<http:listener doc:name="Listener" doc:id="08991a33-ea14-4035-af6e-b7ad16bd5f9f" config-ref="HTTP_Listener_config" path="/event"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="3fce25be-7463-4ebb-af65-66f3a18b5615" >
+			<route >
+				<db:select doc:name="Select" doc:id="d1810693-ca51-4f0f-ab4b-9d414dca2ef9" config-ref="Database_Config">
+			<db:sql><![CDATA[Select W.Item_ID, W.Email, I.Price from Items I join Wishlist W
+ON I.Item_ID = W.Item_ID where W.Price <> I.Price]]></db:sql>
+		</db:select>
+				<ee:transform doc:name="Transform Message" doc:id="4e1808c5-5450-4e00-b7bb-c762cba6d924" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<choice doc:name="Choice" doc:id="f9799687-c766-473d-80c4-720f027a7203" >
+					<when expression="#[payload != [&#10;  &#10;]]">
+						<flow-ref doc:name="Flow Reference" doc:id="c726acf7-ea99-41aa-8ac5-5d3745334cbf" name="price-change-flow"/>
+					</when>
+					<otherwise >
+						<logger level="INFO" doc:name="Logger" doc:id="1d359452-6bad-4291-86d9-7b2f5fe45a23" />
+					</otherwise>
+				</choice>
+			</route>
+			<route >
+				<db:select doc:name="Select" doc:id="ff79b80c-323b-4d10-b515-ff7ad30e98e2" config-ref="Database_Config">
+					<db:sql ><![CDATA[Select W.Item_ID, W.Email, I.Availability from Items I join Wishlist W
+ON I.Item_ID = W.Item_ID where I.Availability <> W.Availability]]></db:sql>
+				</db:select>
+				<ee:transform doc:name="Transform Message" doc:id="654d23c0-2a44-49ab-903e-3f2bfbb7759b" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<choice doc:name="Choice" doc:id="4a74df73-7b10-4396-a5a5-d44e63dd64a4" >
+					<when expression="#[payload != [&#10;  &#10;]]">
+						<flow-ref doc:name="Flow Reference" doc:id="0a74e270-4eae-4f75-ad44-42ae1eb2822f" name="availability-change-flow"/>
+					</when>
+					<otherwise >
+						<logger level="INFO" doc:name="Logger" doc:id="cb79639d-24a2-4e87-8527-52ce792e5d52" />
+					</otherwise>
+				</choice>
+			</route>
+		</scatter-gather>
+		<logger level="INFO" doc:name="Logger" doc:id="fc392740-c945-4554-b46d-c37ec75db3be" message="#[payload]"/>
+	</flow>
+	<flow name="price-change-flow" doc:id="28402178-b79e-4810-ab45-0c5410babfc3" >
+		<batch:job jobName="event-drivenBatch_Job" doc:id="cf693e7e-a143-4826-ae4f-94f73e131832" >
+			<batch:process-records >
+				<batch:step name="Batch_Step" doc:id="4918413b-3190-43f2-96ac-f7eeece1c522" >
+					<set-variable value="#[[payload.Email]]" doc:name="Set Variable" doc:id="9c552ef8-75da-47ff-94f2-c46c47c866d4" variableName="varEmailPrice"/>
+					<db:update doc:name="Update" doc:id="adc824de-7071-4570-9146-deb1bf3bc38c" config-ref="Database_Config">
+						<db:sql><![CDATA[update Wishlist
+set Price = :Price 
+where Item_ID = :Item_ID]]></db:sql>
+						<db:input-parameters><![CDATA[#[{'Price': payload.Price, 'Item_ID': payload.Item_ID}]]]></db:input-parameters>
+					</db:update>
+					<email:send doc:name="Send" doc:id="8f6ebcab-1764-437f-b376-a7ab6fba6646" config-ref="Email_SMTP" toAddresses="#[vars.varEmailPrice]" subject="Amazon-dummy notification for change in Price of Wishlist item" >
+						<email:body >
+							<email:content ><![CDATA[Hi Customer,
+
+The price of an item in your Wishlist has changed.
+
+Happy Shopping,
+Amazon-Dummy]]></email:content>
+						</email:body>
+					</email:send>
+				</batch:step>
+			</batch:process-records>
+		</batch:job>
+	</flow>
+	<flow name="availability-change-flow" doc:id="e37ef341-3a0d-4c67-891c-7655100c482e" >
+		<batch:job jobName="event-drivenBatch_Job1" doc:id="5651ad72-2c79-40c9-96f1-b329e85ae7c4" >
+			<batch:process-records >
+				<batch:step name="Batch_Step1" doc:id="c234386c-e34f-45d5-b5c7-f4c10b2b3d05" >
+					<set-variable value="#[payload.Email]" doc:name="Set Variable" doc:id="7353770c-2bc4-49a3-8d7b-000c351b28dd" variableName="varEmailAvail"/>
+					<db:update doc:name="Update" doc:id="6bb187c2-b39b-404a-955d-e7f6649a1925" config-ref="Database_Config">
+						<db:sql ><![CDATA[update Wishlist
+set Availability = :Availability 
+where Item_ID = :Item_ID]]></db:sql>
+						<db:input-parameters ><![CDATA[#[{'Availability': payload.Availability, 'Item_ID': payload.Item_ID}]]]></db:input-parameters>
+					</db:update>
+					<email:send doc:name="Send" doc:id="027fd830-706c-4f74-b42d-f74a0636e629" config-ref="Email_SMTP" toAddresses="#[vars.varEmailAvail]" subject="Amazon-dummy notification for availability of wishlist item">
+						<email:body >
+							<email:content ><![CDATA[Hi Customer,
+
+The item in your Wishlist is no longer available.
+
+Happy Shopping,
+Amazon-Dummy]]></email:content>
+						</email:body>
+					</email:send>
+				</batch:step>
+			</batch:process-records>
+		</batch:job>
+	</flow>
+</mule>
