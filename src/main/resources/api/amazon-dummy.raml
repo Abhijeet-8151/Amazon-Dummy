@@ -1,0 +1,126 @@
+#%RAML 1.0
+title: Amazon-dummy
+
+/amazon:
+  /items:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              examples:
+                output: !include items/all-items.json
+    /item:
+      get:
+        queryParameters:
+          item-name : string
+        responses:
+          200:
+            body:
+              application/json:
+                examples:
+                  output: !include items/single-item.json
+  
+  /wishlist:
+    post:
+      body:
+        application/json:
+          examples:
+            input: !include /wishlist/wishlist-item.json
+      responses:
+        201:
+          body:
+            application/json:
+              examples:
+                output: "Item added to Wishlist"
+
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              examples:
+                output: !include /wishlist/wishlist-item.json
+            
+      
+            
+
+  /orders:
+    post:
+      responses:
+        201:
+          body:
+            application/json:
+              examples:
+                "message": "ordered successfully"
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              examples:
+                output: !include orders/all-orders.json
+    
+      
+    
+    delete:
+      queryParameters:
+        id : string
+      responses:
+        202:
+          body:
+            application/json:
+              example:
+                "message": "Order cancelled successfully"
+  /accounts:
+    post:
+      body:
+        application/json:
+          examples:
+             input: !include accounts/particular-account.json
+
+      responses:
+        201:
+          body:
+            application/json:
+              examples:
+                "message": "account created successfully"
+    patch:
+      responses:
+        201:
+          body:
+            application/json:
+              examples:
+                "message": "account updated successfully"
+    delete:
+      queryParameters:
+        email: string
+      responses:
+        201:
+          body:
+            application/json:
+              examples:
+                "message": "account deleted successfully"
+  
+    get:
+      queryParameters:
+        email : string
+        phone : number
+        
+      responses:
+        200:
+          body:
+            application/json:
+              examples:
+                output: !include accounts/particular-account.json
+
+
+          
+        
+
+        
+
+
+        
+         
+      

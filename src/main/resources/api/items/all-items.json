@@ -1,0 +1,37 @@
+[
+    {
+        "Item_ID": "1",
+        "Price": "250",
+        "Item_Name": "Wallet",
+        "Availability": "Y",
+        "Item_Description": "Mens Wallet"
+    },
+    {
+        "Item_ID": "2",
+        "Price": "1000",
+        "Item_Name": "Shirt",
+        "Availability": "Y",
+        "Item_Description": "Mens casual Shirt"
+    },
+    {
+        "Item_ID": "3",
+        "Price": "2000",
+        "Item_Name": "Jeans",
+        "Availability": "Y",
+        "Item_Description": "Mens Blue Jeans"
+    },
+    {
+        "Item_ID": "4",
+        "Price": "50000",
+        "Item_Name": "Laptop",
+        "Availability": "Y",
+        "Item_Description": "Electronic Item"
+    },
+    {
+        "Item_ID": "5",
+        "Price": "1500",
+        "Item_Name": "Helmet",
+        "Availability": "Y",
+        "Item_Description": "Bike helmet"
+    }
+]

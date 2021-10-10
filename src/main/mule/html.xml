@@ -149,25 +149,25 @@ body {font-family: Arial, Helvetica, sans-serif;}
     
 
     &lt;label for=&quot;email&quot;&gt;&lt;b&gt;Email&lt;/b&gt;&lt;/label&gt;
-    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Email&quot; name=&quot;email&quot; required&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Email&quot; name=&quot;Email&quot; required&gt;
 
     &lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Phone number&lt;/b&gt;&lt;/label&gt;
-    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Phone Number&quot; name=&quot;message&quot; required&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Phone Number&quot; name=&quot;Phone&quot; required&gt;
 
 	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Name&lt;/b&gt;&lt;/label&gt;
-    &lt;input type=&quot;text&quot; placeholder=&quot;Enter your name&quot; name=&quot;message&quot; required&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter your name&quot; name=&quot;Name&quot; required&gt;
 	
 	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Street&lt;/b&gt;&lt;/label&gt;
-    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Street&quot; name=&quot;message&quot; required&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Street&quot; name=&quot;Street&quot; required&gt;
 	
 	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;City&lt;/b&gt;&lt;/label&gt;
-    &lt;input type=&quot;text&quot; placeholder=&quot;Enter City&quot; name=&quot;message&quot; required&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter City&quot; name=&quot;City&quot; required&gt;
 	
 	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;State&lt;/b&gt;&lt;/label&gt;
-    &lt;input type=&quot;text&quot; placeholder=&quot;Enter State&quot; name=&quot;message&quot; required&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter State&quot; name=&quot;State&quot; required&gt;
 	
 	&lt;label for=&quot;psw&quot;&gt;&lt;b&gt;Pincode&lt;/b&gt;&lt;/label&gt;
-    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Pincode&quot; name=&quot;message&quot; required&gt;
+    &lt;input type=&quot;text&quot; placeholder=&quot;Enter Pincode&quot; name=&quot;Pincode&quot; required&gt;
 	
     &lt;button type=&quot;submit&quot; class=&quot;btn&quot; onclick=&quot;createaccount()&quot;&gt;Create Account&lt;/button&gt;
     &lt;button type=&quot;button&quot; class=&quot;btn cancel&quot; onclick=&quot;closeForm()&quot;&gt;Close&lt;/button&gt;

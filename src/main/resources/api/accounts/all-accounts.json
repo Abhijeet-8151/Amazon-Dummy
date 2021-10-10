@@ -1,0 +1,72 @@
+[
+    {
+        "Pincode": "781022",
+        "Account_ID": "1",
+        "Phone": "1234567890",
+        "City": "Guwahati",
+        "Street": "abc Street",
+        "Name": "Abhijeet",
+        "State": "Assam",
+        "Email": "abc@abc.com"
+    },
+    {
+        "Pincode": "345678",
+        "Account_ID": "2",
+        "Phone": "0987654321",
+        "City": "Pune",
+        "Street": "xyz street",
+        "Name": "Swaswati",
+        "State": "Maharashtra",
+        "Email": "xyz@gmail.com"
+    },
+    {
+        "Pincode": "324235",
+        "Account_ID": "3",
+        "Phone": "0987654321",
+        "City": "Bengaluru",
+        "Street": "rqr street",
+        "Name": "Manik",
+        "State": "Karnataka",
+        "Email": "rqr@gmail.com"
+    },
+    {
+        "Pincode": "768678",
+        "Account_ID": "4",
+        "Phone": "0987654321",
+        "City": "Pondicherry",
+        "Street": "pcr miles",
+        "Name": "Junu",
+        "State": "Chennai",
+        "Email": "pcr@gmail.com4"
+    },
+    {
+        "Pincode": "898792",
+        "Account_ID": "5",
+        "Phone": "0987654321",
+        "City": "Vadodra",
+        "Street": "psr road",
+        "Name": "Lakshya",
+        "State": "Gujarat",
+        "Email": "psr@gmail.com"
+    },
+    {
+        "Pincode": "232314",
+        "Account_ID": "6",
+        "Phone": "0987654321",
+        "City": "Shillong",
+        "Street": "arq street",
+        "Name": "Upasana",
+        "State": "Meghalaya",
+        "Email": "aqr@gmail.com"
+    },
+    {
+        "Pincode": "546578",
+        "Account_ID": "7",
+        "Phone": "0987654321",
+        "City": "Lachung",
+        "Street": "pqm road",
+        "Name": "Ishi",
+        "State": "Sikkim",
+        "Email": "pqm@gmail.com"
+    }
+]
