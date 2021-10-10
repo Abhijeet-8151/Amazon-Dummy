@@ -64,4 +64,12 @@ values (:Name,:Phone,:Email,:Street,:City,:State,:Pincode)]]></db:sql>
 			</otherwise>
 		</choice>
 	</flow>
+	<flow name="accountsFlow" doc:id="08482896-49cf-4742-97a5-87ac011dd26e" >
+		<http:listener doc:name="Listener" doc:id="81a4145b-0c20-4b9d-99da-3e63612eea4b" config-ref="HTTP_Listener_config" path="amazon/deleteAccount"/>
+		<db:delete doc:name="Delete" doc:id="242bcc63-1bf2-431e-8c41-d85aff43f07b" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from Accounts where Email = :Email and Phone = :Phone]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'Email': attributes.queryParams.Email,'Phone': attributes.queryParams.Phone}]]]></db:input-parameters>
+		</db:delete>
+		<set-payload value="Account deleted successfully" doc:name="Set Payload" doc:id="d96d70e6-1be5-485d-950b-b8ca78e6398f" />
+	</flow>
 </mule>

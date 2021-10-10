@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
     <apikit:config name="amazon-dummy-config" api="amazon-dummy.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="amazon-dummy-main">
         <http:listener config-ref="HTTP_Listener_config" path="/api/*">
@@ -131,16 +131,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="delete:\amazon\orders:amazon-dummy-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  message: "Order cancelled successfully"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="81e8a773-8bdc-4aea-aae9-db08712534ab" name="cancelOrders"/>
     </flow>
     <flow name="patch:\amazon\accounts:amazon-dummy-config">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
@@ -153,23 +144,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\amazon\accounts:amazon-dummy-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  Pincode: "781022",
-  Account_ID: "1",
-  Phone: "1234567890",
-  City: "Guwahati",
-  Street: "abc Street",
-  Name: "Abhijeet",
-  State: "Assam",
-  Email: "abc@abc.com"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="d68f7d94-6ae6-4ce8-ab62-b882f9879b9f" name="getAccounts"/>
     </flow>
     <flow name="get:\amazon\items\item:amazon-dummy-config">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
@@ -190,144 +165,21 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\amazon\items:amazon-dummy-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    Item_ID: "1",
-    Price: "250",
-    Item_Name: "Wallet",
-    Availability: "Y",
-    Item_Description: "Mens Wallet"
-  }, 
-  {
-    Item_ID: "2",
-    Price: "1000",
-    Item_Name: "Shirt",
-    Availability: "Y",
-    Item_Description: "Mens casual Shirt"
-  }, 
-  {
-    Item_ID: "3",
-    Price: "2000",
-    Item_Name: "Jeans",
-    Availability: "Y",
-    Item_Description: "Mens Blue Jeans"
-  }, 
-  {
-    Item_ID: "4",
-    Price: "50000",
-    Item_Name: "Laptop",
-    Availability: "Y",
-    Item_Description: "Electronic Item"
-  }, 
-  {
-    Item_ID: "5",
-    Price: "1500",
-    Item_Name: "Helmet",
-    Availability: "Y",
-    Item_Description: "Bike helmet"
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="c220aadc-cdb9-4324-9fa6-1d83f05e4359" name="getItems"/>
     </flow>
     <flow name="get:\amazon\orders:amazon-dummy-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    Order_Item_ID: "1",
-    Quantity: "2",
-    Item_ID: "1",
-    Order_ID: "123"
-  }, 
-  {
-    Order_Item_ID: "2",
-    Quantity: "3",
-    Item_ID: "2",
-    Order_ID: "123"
-  }, 
-  {
-    Order_Item_ID: "3",
-    Quantity: "1",
-    Item_ID: "3",
-    Order_ID: "789"
-  }, 
-  {
-    Order_Item_ID: "4",
-    Quantity: "4",
-    Item_ID: "1",
-    Order_ID: "101"
-  }, 
-  {
-    Order_Item_ID: "5",
-    Quantity: "3",
-    Item_ID: "4",
-    Order_ID: "112"
-  }, 
-  {
-    Order_Item_ID: "6",
-    Quantity: "1",
-    Item_ID: "5",
-    Order_ID: "112"
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="b9cf46bb-1ff6-43e8-9f94-881fbec1b8a6" name="getOrders"/>
     </flow>
     <flow name="get:\amazon\wishlist:amazon-dummy-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    Item_ID: "1",
-    Price: "250",
-    Item_Name: "Wallet",
-    Availability: "Y",
-    Item_Description: "Mens Wallet"
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="beeeebd7-44c8-437b-97c3-ccc779fe7d58" name="getWishlist"/>
     </flow>
     <flow name="post:\amazon\accounts:application\json:amazon-dummy-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"account created successfully"]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="98e148f8-2988-4aca-8324-2028aac4c900" name="postAccounts"/>
     </flow>
     <flow name="post:\amazon\orders:amazon-dummy-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"ordered successfully"]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="923c8f76-d215-49bc-b3b5-d19c75208c26" name="postOrders"/>
     </flow>
     <flow name="post:\amazon\wishlist:application\json:amazon-dummy-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-"Item added to Wishlist"]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="9945b4a5-819c-44f8-b251-4a0cf7c05059" name="postWishlist"/>
     </flow>
 </mule>

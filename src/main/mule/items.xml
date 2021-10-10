@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/amazon-dummy http://www.mulesoft.org/schema/mule/amazon-dummy/current/mule-amazon-dummy.xsd">
-	<flow name="implementationFlow" doc:id="a2e84e8f-5ef0-40b1-a1f6-29189f07d924" >
+	<flow name="getItems" doc:id="a2e84e8f-5ef0-40b1-a1f6-29189f07d924" >
 		<http:listener doc:name="Listener" doc:id="de92193b-5296-4017-85d0-113b2bc4be21" config-ref="HTTP_Listener_config" path="/amazon/items"/>
 		<set-variable value="#[attributes.queryParams.item]" doc:name="Set Variable" doc:id="cb01ad8f-af93-466a-9ad1-281574139193" variableName="varParam"/>
 		<choice doc:name="Choice" doc:id="b9cbfb3f-25c4-4d70-9150-db1df246b96e" >
