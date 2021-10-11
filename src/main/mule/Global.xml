@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/amazon-dummy http://www.mulesoft.org/schema/
 		<s3:basic-connection accessKey="AKIAVJTY4POZ5KT7LX57" secretKey="NhH83yrviaqvi4Fz/5X5oMXfOYkEFU9/+SEsmqIN" region="AP_SOUTH_1" />
 	</s3:config>
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="62e5fc96-648b-459b-9720-8f5bf6109ba6" >
-		<db:my-sql-connection host="sql6.freemysqlhosting.net" port="3306" user="sql6442163" password="vdH7u7BerT" database="sql6442163" />
+		<db:my-sql-connection host="sql6.freemysqlhosting.net" port="3306" user="sql6442983" password="rwl8wdQ6lX" database="sql6442983" />
 	</db:config>
 	<amazon-dummy:config name="Amazon_dummy_Config" doc:name="Amazon-dummy Config" doc:id="b8cc4119-c49f-45ef-ab35-5d9c222fef4c" property_host="localhost" property_port="8081" property_protocol="HTTP" />
 	<db:config name="Database_Config1" doc:name="Database Config" doc:id="4dbd46d7-919b-4020-a1e4-e3ef9adc4eb4" >

@@ -2,9 +2,9 @@
 <types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
   <types:catalog>
     <types:type name="Items-csv" format="csv">
-      <types:shape format="weave" example="examples/Items.csv"><![CDATA[%dw 2.0
+      <types:shape format="weave" example="examples/Items-1.csv"><![CDATA[%dw 2.0
 
-type Items_csv = Array<{|  ITEM_ID: String,   ITEM_NAME: String,   ITEM_DESCRIPTION: String,   PRICE: String,   AVAILABILITY: String|}> {"isQuotedString": "false",
+type Items_csv = Array<{|  ITEM_NAME: String,   ITEM_DESCRIPTION: String,   PRICE: String,   AVAILABILITY: String|}> {"isQuotedString": "false",
 "header": "true",
 "headerLineNumber": "0"}
 
@@ -16,16 +16,16 @@ type Items_csv = Array<{|  ITEM_ID: String,   ITEM_NAME: String,   ITEM_DESCRIPT
       </types:properties>
     </types:type>
     <types:type name="Items-into-DB" format="json">
-      <types:shape format="weave" example="examples/maptoDB-1.json"><![CDATA[%dw 2.0
+      <types:shape format="weave" example="examples/maptoDB-2.json"><![CDATA[%dw 2.0
 
-type Items_into_DB = Array<{|  Item_ID: String,   Item_Name: String,   Item_Description: String,   Price: String,   Availability: String|}> {"example": "[{\\\"Item_ID\\\":\\\"123\\\",\\\"Item_Name\\\":\\\"xyz\\\",\\\"Item_Description\\\":\\\"abc\\\",\\\"Price\\\":\\\"100\\\",\\\"Availability\\\":\\\"ced\\\"}]"}
+type Items_into_DB = Array<{|  Item_Name: String,   Item_Description: String,   Price: String,   Availability: String|}> {"example": "[{\\\"Item_Name\\\":\\\"xyz\\\",\\\"Item_Description\\\":\\\"abc\\\",\\\"Price\\\":\\\"100\\\",\\\"Availability\\\":\\\"ced\\\"}]"}
 
 ]]></types:shape>
     </types:type>
     <types:type name="Orders-csv" format="csv">
-      <types:shape format="weave" example="examples/Orders-1.csv"><![CDATA[%dw 2.0
+      <types:shape format="weave" example="examples/Orders-2.csv"><![CDATA[%dw 2.0
 
-type Orders_csv = Array<{|  Order_Item_ID: String,   Item_ID: String,   Item_Name: String|}> {"isQuotedString": "false",
+type Orders_csv = Array<{|  Item_ID: String,   Item_Name: String,   Email: String|}> {"isQuotedString": "false",
 "header": "true",
 "headerLineNumber": "0"}
 
@@ -37,16 +37,16 @@ type Orders_csv = Array<{|  Order_Item_ID: String,   Item_ID: String,   Item_Nam
       </types:properties>
     </types:type>
     <types:type name="Orders-into-DB" format="json">
-      <types:shape format="weave" example="examples/maptoDBOrders-1.json"><![CDATA[%dw 2.0
+      <types:shape format="weave" example="examples/maptoDBOrders-2.json"><![CDATA[%dw 2.0
 
-type Orders_into_DB = Array<{|  Order_Item_ID: String,   Item_ID: String,   Item_Name: String|}> {"example": "[{\\\"Order_Item_ID\\\":\\\"1\\\",\\\"Item_ID\\\":\\\"3\\\",\\\"Item_Name\\\":\\\"Wallet\\\"}]"}
+type Orders_into_DB = Array<{|  Item_ID: String,   Item_Name: String,   Email: String|}> {"example": "[{\\\"Item_ID\\\":\\\"3\\\",\\\"Item_Name\\\":\\\"Wallet\\\",\\\"Email\\\":\\\"pqm@gmail.com\\\"}]"}
 
 ]]></types:shape>
     </types:type>
     <types:type name="Accounts-csv" format="csv">
-      <types:shape format="weave" example="examples/Accounts.csv"><![CDATA[%dw 2.0
+      <types:shape format="weave" example="examples/Accounts-1.csv"><![CDATA[%dw 2.0
 
-type Accounts_csv = Array<{|  Account_ID: String,   Name: String,   Phone: String,   Email: String,   Street: String,   City: String,   State: String,   Pincode: String|}> {"isQuotedString": "false",
+type Accounts_csv = Array<{|  Name: String,   Phone: String,   Email: String,   Street: String,   City: String,   State: String,   Pincode: String|}> {"isQuotedString": "false",
 "header": "true",
 "headerLineNumber": "0"}
 
@@ -58,9 +58,9 @@ type Accounts_csv = Array<{|  Account_ID: String,   Name: String,   Phone: Strin
       </types:properties>
     </types:type>
     <types:type name="Accounts-into-DB" format="json">
-      <types:shape format="weave" example="examples/maptoDBAccounts.json"><![CDATA[%dw 2.0
+      <types:shape format="weave" example="examples/maptoDBAccounts-1.json"><![CDATA[%dw 2.0
 
-type Accounts_into_DB = Array<{|  Account_ID: String,   Name: String,   Phone: String,   Email: String,   Street: String,   City: String,   State: String,   Pincode: String|}> {"example": "[{\\\"Account_ID\\\":\\\"1\\\",\\\"Name\\\":\\\"Abhijeet\\\",\\\"Phone\\\":\\\"1234567890\\\",\\\"Email\\\":\\\"abcd@abcd.com\\\",\\\"Street\\\":\\\"Sixmile\\\",\\\"City\\\":\\\"Guwahati\\\",\\\"State\\\":\\\"Assam\\\",\\\"Pincode\\\":\\\"781022\\\"}]"}
+type Accounts_into_DB = Array<{|  Name: String,   Phone: String,   Email: String,   Street: String,   City: String,   State: String,   Pincode: String|}> {"example": "[{\\\"Name\\\":\\\"Abhijeet\\\",\\\"Phone\\\":\\\"1234567890\\\",\\\"Email\\\":\\\"abcd@abcd.com\\\",\\\"Street\\\":\\\"Sixmile\\\",\\\"City\\\":\\\"Guwahati\\\",\\\"State\\\":\\\"Assam\\\",\\\"Pincode\\\":\\\"781022\\\"}]"}
 
 ]]></types:shape>
     </types:type>
@@ -1070,6 +1070,48 @@ type: string]]></types:shape>
           <types:variable name="targetvar" type="auto_fdce1144-56ec-4e37-ab93-46334d773396_Output-Variables-targetvar"/>
           <types:variable name="httpStatus" type="auto_fdce1144-56ec-4e37-ab93-46334d773396_Output-Variables-httpStatus"/>
         </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#91b3e187-ef30-4384-8e1b-07cdf0c66e74">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="Items-csv"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Items-into-DB"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a6a3db11-21cb-43cf-beb8-e41bb432f1fc">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="Accounts-csv"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Accounts-into-DB"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#26dd245f-c520-4097-a152-40e06e74138d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="Orders-csv"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Orders-into-DB"/>
+        </types:message>
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
