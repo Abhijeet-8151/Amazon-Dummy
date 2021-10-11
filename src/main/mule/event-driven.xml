@@ -87,7 +87,7 @@ Amazon-Dummy]]></email:content>
 		<batch:job jobName="event-drivenBatch_Job1" doc:id="5651ad72-2c79-40c9-96f1-b329e85ae7c4" >
 			<batch:process-records >
 				<batch:step name="Batch_Step1" doc:id="c234386c-e34f-45d5-b5c7-f4c10b2b3d05" >
-					<set-variable value="#[payload.Email]" doc:name="Set Variable" doc:id="7353770c-2bc4-49a3-8d7b-000c351b28dd" variableName="varEmailAvail"/>
+					<set-variable value="#[[payload.Email]]" doc:name="Set Variable" doc:id="7353770c-2bc4-49a3-8d7b-000c351b28dd" variableName="varEmailAvail"/>
 					<db:update doc:name="Update" doc:id="6bb187c2-b39b-404a-955d-e7f6649a1925" config-ref="Database_Config">
 						<db:sql ><![CDATA[update Wishlist
 set Availability = :Availability 
