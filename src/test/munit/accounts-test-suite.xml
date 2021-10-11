@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="accounts-test-suite.xml" />
+	<munit:test name="accounts-test-suite-getAccountsTest" doc:id="d315518d-3c08-43a2-a5fc-ca660ebfc14b" description="Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="0df1c84f-dc75-4648-9728-bd50e9fcfb17" >
+				<munit:attributes value="#[{queryParams:{email:'test@munit.com', phone:'0987654321'}}]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to getAccounts" doc:id="321d395a-08a8-4215-953f-6965aaba1bf8" name="getAccounts"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="8d7f6621-24ca-443b-8c15-900da49a6e8a" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="accounts-test-suite-postAccountsTest" doc:id="003196f6-b8d7-440d-aec3-fa3417000d2e" description="Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="0b62a8f0-8535-44b5-99fd-3bcf465c3c0a" >
+				<munit:payload value='#[output application/json&#10;---&#10;&#10;[{&#10;    "name": "Email",&#10;    "value": "abc@abc.com"&#10;  },&#10;  {&#10;    "name": "Phone",&#10;    "value": "123"&#10;  },&#10;  {&#10;    "name": "Name",&#10;    "value": "abc"&#10;  },&#10;  {&#10;    "name": "Street",&#10;    "value": "pqr"&#10;  },&#10;  {&#10;    "name": "City",&#10;    "value": "ghy"&#10;  },&#10;  {&#10;    "name": "State",&#10;    "value": "assm"&#10;  },&#10;  {&#10;    "name": "Pincode",&#10;    "value": "12345"&#10;  }]&#10;]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to postAccounts" doc:id="ea8fa508-f623-4825-bfdc-2e3999664113" name="postAccounts"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="fa1b5158-f311-4d39-936c-b99e9ac95c9e" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="accounts-test-suite-accountsFlowTest" doc:id="b1724776-ef5f-4c7a-b04f-8860ff8eef0b" description="Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="fb98d328-bf8a-4c9c-8491-f66b060098f4" >
+				<munit:attributes value="#[{queryParams:{email:'test@munit.com', phone:'0987654321'}}]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to accountsFlow" doc:id="47692fb7-bb41-430f-b87f-3867c7c2cd61" name="accountsFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="991e33aa-f1ea-4e19-95d9-b06c38708533" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

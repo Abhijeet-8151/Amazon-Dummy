@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:amazon-dummy="http://www.mulesoft.org/schema/mule/amazon-dummy" xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns:s3="http://www.mulesoft.org/schema/mule/s3"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:amazon-dummy="http://www.mulesoft.org/schema/mule/amazon-dummy"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:s3="http://www.mulesoft.org/schema/mule/s3" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
-http://www.mulesoft.org/schema/mule/amazon-dummy http://www.mulesoft.org/schema/mule/amazon-dummy/current/mule-amazon-dummy.xsd">
+http://www.mulesoft.org/schema/mule/amazon-dummy http://www.mulesoft.org/schema/mule/amazon-dummy/current/mule-amazon-dummy.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d0cb728f-3b05-473e-9621-609d7dd58b62" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
@@ -20,4 +21,11 @@ http://www.mulesoft.org/schema/mule/amazon-dummy http://www.mulesoft.org/schema/
 	<db:config name="Database_Config1" doc:name="Database Config" doc:id="4dbd46d7-919b-4020-a1e4-e3ef9adc4eb4" >
 		<db:oracle-connection host="localhost" user="xe" password="xe" serviceName="xe" />
 	</db:config>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="db8ea17d-3374-4f39-9e6a-23d2e515dc8b" >
+		<email:smtp-connection host="smtp.gmail.com" port="587" user="abhijeetsharma171990@gmail.com" password="jesuslordd" >
+			<email:properties >
+				<email:property key="mail.smtp.starttls.enable" value="true" />
+			</email:properties>
+		</email:smtp-connection>
+	</email:smtp-config>
 </mule>

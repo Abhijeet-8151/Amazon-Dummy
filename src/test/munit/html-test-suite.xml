@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="html-test-suite.xml" />
+	<munit:test name="html-test-suite-loginTest" doc:id="fb2e4b40-356e-4f89-8307-4414fde88dc5" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to login" doc:id="3dece991-d206-4c12-acc2-bbc47a562f62" name="login"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="ed16a44b-76a2-45e0-a49f-1fd38a9b0a81" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="html-test-suite-menuTest" doc:id="e3c2c736-e863-412d-a5ba-3119b51efb5c" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to menu" doc:id="87946455-a694-45e1-9f16-43cb8940773a" name="menu"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="6bd122f2-b6bd-4f99-8cc9-1a90c9b86599" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
