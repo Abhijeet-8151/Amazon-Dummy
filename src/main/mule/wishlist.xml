@@ -11,7 +11,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/amazon-dummy http://www.mulesoft.org/schema/mule/amazon-dummy/current/mule-amazon-dummy.xsd">
 	<flow name="postWishlist" doc:id="8b8e62e8-2745-40c5-bed6-1be1b55c871e">
-		<http:listener doc:name="Listener" doc:id="a79bbe9d-d065-4475-a5ae-0da61668ffa5" config-ref="HTTP_Listener_config" path="/amazon/wishlist" />
 		<ee:transform doc:name="Transform Message" doc:id="31f19c5f-baff-4fa8-8aff-0e6ee244e988">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -33,7 +32,6 @@ values (:Item_ID, :Item_Name, :Price, :Availability,:Email)]]></db:sql>
 		<set-payload value="Item(s) added to wishlist" doc:name="Set Payload" doc:id="7a631f4a-0a23-4287-aaf4-f5cab739ac8d" />
 	</flow>
 	<flow name="getWishlist" doc:id="7d362a32-223a-4cc9-af8d-b44f04fbf98e" >
-		<http:listener doc:name="Listener" doc:id="5ed4a882-fd3c-4bda-8ed2-5a3e5b7bc5a7" config-ref="HTTP_Listener_config" path="/amazon/viewWishlist"/>
 		<db:select doc:name="Select" doc:id="90e95c9a-224b-4c24-8c5a-4b9f0ac4c02c" config-ref="Database_Config">
 			<db:sql ><![CDATA[Select Item_ID,Item_Name,Price from Wishlist where Email = :Email]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{'Email':attributes.queryParams.email}]]]></db:input-parameters>

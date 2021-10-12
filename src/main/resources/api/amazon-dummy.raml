@@ -114,6 +114,35 @@ title: Amazon-dummy
               examples:
                 output: !include accounts/particular-account.json
 
+  /payment:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              examples:
+                "Output": "payment page"
+
+/login:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            examples:
+              "Output": "login page"
+
+/html:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            examples:
+              "Output": "menu page"
+
+
+
 
           
         

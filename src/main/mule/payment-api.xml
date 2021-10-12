@@ -5,7 +5,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="payment-apiFlow" doc:id="fbb5d606-81a9-4819-af50-2b74f1bb7d59" >
-		<http:listener doc:name="Listener" doc:id="04357847-9b1c-4aec-b22e-531324c24b48" config-ref="HTTP_Listener_config" path="/amazon/payment"/>
 		<parse-template doc:name="Parse Template" doc:id="dcd7e2de-a7dd-43d2-acf3-eacbe1556fc0" >
 			<content >&lt;html&gt;
 
@@ -106,7 +105,7 @@ function placeOrder()
 	{
 		x.innerHTML = xhr.responseText;
 	}
-	xhr.open('POST', 'http://localhost:8081/amazon/order' + qemail, true);
+	xhr.open('POST', 'http://localhost:8081/api/amazon/orders' + qemail, true);
 	
 	xhr.setRequestHeader('Content-type', 'application/json');
 	

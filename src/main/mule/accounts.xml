@@ -7,7 +7,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="getAccounts" doc:id="7bc5751e-cfbf-47ae-aad0-8c7195d0222b" >
-		<http:listener doc:name="Listener" doc:id="63d7a603-de6a-40d6-8ed4-f3f1ef8d2835" config-ref="HTTP_Listener_config" path="/amazon/accounts"/>
 		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="d0fd1c38-696f-4a1b-bc67-313622d1ec6b" />
 		<db:select doc:name="Select" doc:id="ed063aea-dc10-49fa-a0ac-bd5b4723433e" config-ref="Database_Config">
 			<db:sql ><![CDATA[Select Account_ID from Accounts where Email = :Email and Phone = :Phone]]></db:sql>
@@ -31,7 +30,6 @@ payload]]></ee:set-payload>
 		</choice>
 	</flow>
 	<flow name="postAccounts" doc:id="fdce1144-56ec-4e37-ab93-46334d773396" >
-		<http:listener doc:name="Listener" doc:id="b4ae4c52-0755-49ae-8614-504c766ff9ac" config-ref="HTTP_Listener_config" path="/amazon/createAccount"/>
 		<ee:transform doc:name="Transform Message" doc:id="06fb828d-f6b7-4ea0-9bfd-24f13c27ffa2" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
