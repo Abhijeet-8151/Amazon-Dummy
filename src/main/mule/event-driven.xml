@@ -8,8 +8,12 @@ http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/em
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<flow name="event-drivenFlow" doc:id="4ec07e3b-7e06-48d3-93c7-86f5455175cc" >
-		<http:listener doc:name="Listener" doc:id="08991a33-ea14-4035-af6e-b7ad16bd5f9f" config-ref="HTTP_Listener_config" path="/event"/>
+	<flow name="event-drivenFlow" doc:id="4ec07e3b-7e06-48d3-93c7-86f5455175cc" initialState="stopped">
+		<scheduler doc:name="Scheduler" doc:id="8b366d46-7c7c-4537-a488-5d1330d22f8b" >
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</scheduler>
 		<scatter-gather doc:name="Scatter-Gather" doc:id="3fce25be-7463-4ebb-af65-66f3a18b5615" >
 			<route >
 				<db:select doc:name="Select" doc:id="d1810693-ca51-4f0f-ab4b-9d414dca2ef9" config-ref="Database_Config">

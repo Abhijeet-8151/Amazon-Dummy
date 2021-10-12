@@ -6,6 +6,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
 	<flow name="login" doc:id="4c3cc249-a64b-42e6-a655-30a0c80d856f" >
+		<http:listener doc:name="Listener" doc:id="7c03e62c-891d-4f91-819d-eea5532f45b7" config-ref="HTTP_Listener_config" path="/login"/>
 		<parse-template doc:name="Parse Template" doc:id="96fa7219-46b1-4246-822f-2bb6b024b830" >
 			<content >&lt;html&gt;
 

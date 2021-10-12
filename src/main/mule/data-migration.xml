@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/cu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<flow name="data-migrationFlow" doc:id="2cc07225-dbbb-4ee4-a975-ee866a0c64b7" >
-		<http:listener doc:name="Listener" doc:id="52237874-2ae7-4026-91ad-1a1d65c56318" config-ref="HTTP_Listener_config" path="/migrate"/>
+		<http:listener doc:name="Listener" doc:id="ae7828fb-ba91-4f7a-a7d8-01fc51c13031" config-ref="HTTP_Listener_config" path="/migrate"/>
 		<scatter-gather doc:name="Scatter-Gather" doc:id="4833f176-9e89-40af-9d9b-7458dcfb5f23" >
 			<route >
 				<s3:get-object doc:name="Get Items object" doc:id="1aca516a-5acc-452a-85fe-2049b72a6c6c" config-ref="Amazon_S3_Configuration" bucketName="g13-inventory" key="Items.csv"/>
@@ -26,7 +26,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 					</ee:message>
 				</ee:transform>
 				<db:bulk-insert doc:name="Bulk insert" doc:id="f52f8b67-dcf5-4fb7-a163-d6910b6f1bd3" config-ref="Database_Config">
-					<db:sql ><![CDATA[insert into Items (Item_Name, Item_Description, Price, Availability)
+					<db:sql ><![CDATA[insert IGNORE into Items (Item_Name, Item_Description, Price, Availability)
 values (:Item_Name, :Item_Description, :Price, :Availability)]]></db:sql>
 				</db:bulk-insert>
 			</route>
@@ -49,7 +49,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 					</ee:message>
 				</ee:transform>
 				<db:bulk-insert doc:name="Bulk insert" doc:id="10204b84-1c64-4bd8-9d7e-da2be0b59645" config-ref="Database_Config">
-					<db:sql ><![CDATA[insert into Accounts (Name,Phone,Email,Street,City,State,Pincode)
+					<db:sql ><![CDATA[insert IGNORE into Accounts (Name,Phone,Email,Street,City,State,Pincode)
 values (:Name,:Phone,:Email,:Street,:City,:State,:Pincode)]]></db:sql>
 				</db:bulk-insert>
 			</route>
@@ -68,7 +68,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 					</ee:message>
 				</ee:transform>
 				<db:bulk-insert doc:name="Bulk insert" doc:id="f6c87355-3653-40df-8128-5ba126514b6d" config-ref="Database_Config">
-					<db:sql ><![CDATA[insert into Orders (Item_ID,Item_Name,Email)
+					<db:sql ><![CDATA[insert IGNORE into Orders (Item_ID,Item_Name,Email)
 values (:Item_ID,:Item_Name,:Email)]]></db:sql>
 				</db:bulk-insert>
 			</route>
